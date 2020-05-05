@@ -20,7 +20,10 @@ class User < ActiveRecord::Base
 
     # Additional CRUD Methods: Begin
 
-    # create consoles, create console by name
+    def create_console(console_name)
+        Console.create(console_name)
+        self.add_console
+    end
 
     def add_console(console)
         self.consoles.push()
@@ -60,9 +63,5 @@ class User < ActiveRecord::Base
     def games
         self.consoles.map{|console| console.games}.flatten
     end
-
-
-
-
 
 end
