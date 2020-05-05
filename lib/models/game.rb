@@ -7,5 +7,19 @@ class Game < ActiveRecord::Base
     def initialize(name:)
         super
     end
+
+    def add_game(name)
+        first_release_date = ""
+        rating = ""
+        summary = ""
+        GamesApi.get_games.each do |game|
+            if name == game["name"]
+                first_release_date = game["first_release_date"]
+                rating = game["rating"]
+                summary = game["summary"]
+            end
+        end
+        Game.create(name: name, first_release_date: first_release_date, rating: rating, summary: summary)
+    end
     
 end
