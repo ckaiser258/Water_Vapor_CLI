@@ -1,4 +1,5 @@
 require 'bundler'
+require 'net/https'
 require 'time'
 Bundler.require
 
