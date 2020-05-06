@@ -24,12 +24,9 @@ ActiveRecord::Schema.define(version: 2020_05_04_235438) do
 
   create_table "games", force: :cascade do |t|
     t.string "name"
-    t.datetime "release_year"
-    t.string "age_rating"
-    t.string "genre"
-    t.boolean "multiplayer"
+    t.datetime "first_release_date"
+    t.string "rating"
     t.text "summary"
-    t.string "main_character"
   end
 
   create_table "users", force: :cascade do |t|

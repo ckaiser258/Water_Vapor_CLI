@@ -10,20 +10,22 @@ class User < ActiveRecord::Base
     # Also update age when birthday is updated
     def birthday=(birthday)
         super
-        self.calculate_age
+        # THIS IS BEING BROKEN BY FAKERS BIRTHDAY INPUTS, Need to troubleshoot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        #self.calculate_age
     end
 
     def calculate_age
-        # 31557600 is the seconds per average year of 365.25 days
-        self.age = ((Time.now - self.birthday)/31557600).floor
+        self.age = ((Time.zone.now - self.birthday.to_time) / 1.year.seconds).floor
     end
 
     # Additional CRUD Methods: Begin
 
-    # create consoles, create console by name
+    def create_console(console_name)
+        self.add_console(Console.create(name: console_name))
+    end
 
     def add_console(console)
-        self.consoles.push()
+        self.consoles.push(console)
     end
 
     def add_console_by_name(console_name)
@@ -56,13 +58,21 @@ class User < ActiveRecord::Base
 
     # Additional CRUD Methods: End
 
+    # Other Analytics: Start
+
+    def console_count
+        self.consoles.count
+    end
+
     # List all games in users library
     def games
         self.consoles.map{|console| console.games}.flatten
     end
 
+    def game_count
+        self.games.count
+    end
 
-
-
+    # Otehr Analytics: End
 
 end
