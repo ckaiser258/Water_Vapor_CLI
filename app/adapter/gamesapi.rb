@@ -1,5 +1,6 @@
 require 'net/https'
 require 'pry'
+require 'json'
 
 class GamesApi
     def self.get_platforms
@@ -30,14 +31,6 @@ class GamesApi
         request.body = 'fields name, first_release_date, rating, summary;'
         puts http.request(request).body
     end
-
-    def self.get_20_games
-        http = Net::HTTP.new('api-v3.igdb.com',443)
-        http.use_ssl = true
-        request = Net::HTTP::Post.new(URI('https://api-v3.igdb.com/games'), {'user-key' => '604d3e58cf35c387d2cc94b3e51ecc35'})
-        request.body = 'fields name, first_release_date, rating, summary; limit 20;'
-        puts http.request(request).body
-    end
 end
 
-GamesApi.get_games
+GamesApi.get_games.first["name"]
