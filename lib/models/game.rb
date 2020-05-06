@@ -9,6 +9,10 @@ class Game < ActiveRecord::Base
         Games.all.map{|game| game.name}
     end
 
+    def top_ten
+        Game.all.order(rating: :desc).limit(10).map{|game| "#{game.name} (Rating: #{game.rating})"}
+    end
+
     # Additional CRUD Methods: End
 
     def add_game(name)

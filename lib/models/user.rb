@@ -76,11 +76,23 @@ class User < ActiveRecord::Base
         self.games.count
     end
 
-    # Other Analytics Methods: End
+    # Returns a list of game names that self and another user have in commond
+    def common_games(user)
+        (self.games & user.games).map{|game| game.name}
+    end
 
-    # Helper Methods
+    # All user stats
+    def self.stats
+        self.all.map{|user| "Name: #{user.name}, Consoles: #{user.console_count}, Games: #{user.game_count}"}
+    end
+
+    # Other Analytics Methods: End
+    # Helper Methods: Begin
+
     def console_in_user_library?(console)
         self.consoles.include?(console)
     end
+
+    # Helper Methods: End
 
 end

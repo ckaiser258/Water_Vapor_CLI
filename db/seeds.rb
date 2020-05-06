@@ -20,13 +20,13 @@ end
 # Game seeds from IGDB API
 GamesApi.get_games(game_seed_count).each do |game|
     name = game["name"]
-    first_release_date = game["first_release_date"]
+    first_release_date = DateTime.strptime(game["first_release_date"].to_s,"%s") if game["first_release_date"]
     rating = game["rating"]
     summary = game["summary"]
     Game.create(name: name, first_release_date: first_release_date, rating: rating, summary: summary)
 end
 
-# Add consoles to db and assign user id's
+# Consoles seeds from IGDB API
 GamesApi.get_consoles(console_seed_count).each do |console|
     name = console["name"]
     user = User.all[rand(user_seed_count)]
@@ -40,5 +40,3 @@ console_game_seed_count.times do
     user = console.user
     user.add_game_to_console(console, game)
 end
-
-
