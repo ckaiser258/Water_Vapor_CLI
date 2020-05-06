@@ -3,11 +3,6 @@ class Game < ActiveRecord::Base
     has_many(:console_games)
     has_many(:consoles, through: :console_games)
 
-    # Setup required initialized attributes
-    def initialize(name:)
-        super
-    end
-
     def add_game(name)
         first_release_date = ""
         rating = ""
