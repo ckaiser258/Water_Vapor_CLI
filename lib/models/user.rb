@@ -10,12 +10,12 @@ class User < ActiveRecord::Base
     # Also update age when birthday is updated
     def birthday=(birthday)
         super
-        # THIS IS BEING BROKEN BY FAKERS BIRTHDAY INPUTS, Need to troubleshoot!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        #self.calculate_age
+        self.calculate_age
     end
 
     def calculate_age
-        self.age = ((Time.zone.now - self.birthday.to_time) / 1.year.seconds).floor
+        # Note 365.25 average days per year
+        self.age = ((DateTime.now - self.birthday) / 365.25).floor
     end
 
     # Additional CRUD Methods: Begin
@@ -41,24 +41,27 @@ class User < ActiveRecord::Base
     end
 
     def add_game_to_console(console, game)
-        console.add_game(game)
+        # Adds game only if Console belongs to User
+         console_in_user_library?(console) ? console.add_game(game) : "Unable to add #{game.name} to console #{console.name} because this console does not belong to you."
     end
 
     def add_game_by_name_to_console(console, game_name)
-        console.add_game_by_name(game_name)
+        # Adds game only if Console belongs to User
+        console_in_user_library?(console) ? console.add_game_by_name(game_name) : "Unable to add #{game.name} to console #{console.name} because this console does not belong to you."
     end
 
     def remove_game_from_console(console, game)
-        console.remove_game(game)
+        # Remove game only if Console belongs to User
+        console_in_user_library?(console) ? console.remove_game(game) : "Unable to add #{game.name} to console #{console.name} because this console does not belong to you."
     end
 
     def remove_game_by_name_from_console(console, game_name)
-        console.remove_game_by_name(game_name)
+        # Remove game only if Console belongs to User
+        console_in_user_library?(console) ? console.remove_game_by_name(game_name) : "Unable to add #{game.name} to console #{console.name} because this console does not belong to you."
     end
 
     # Additional CRUD Methods: End
-
-    # Other Analytics: Start
+    # Other Analytics Methods: Start
 
     def console_count
         self.consoles.count
@@ -73,6 +76,11 @@ class User < ActiveRecord::Base
         self.games.count
     end
 
-    # Otehr Analytics: End
+    # Other Analytics Methods: End
+
+    # Helper Methods
+    def console_in_user_library?(console)
+        self.consoles.include?(console)
+    end
 
 end

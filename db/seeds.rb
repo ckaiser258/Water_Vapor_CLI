@@ -1,14 +1,14 @@
+# Manually assign seed counts to be used when creating/pulling seeds
+user_seed_count = 20
+console_seed_count = 30
+game_seed_count = 50
+console_game_seed_count = 75
+
 # Clear all old data
 User.destroy_all
 Console.destroy_all
 Game.destroy_all
 ConsoleGame.destroy_all
-
-# Manually assign seed counts to be used when creating/pulling seeds
-user_seed_count = 25
-console_seed_count = 35
-game_seed_count = 45
-console_game_seed_count =35
 
 # User seeds via Faker gem
 user_seed_count.times do
@@ -32,17 +32,17 @@ def get_games(count)
     request.body = "fields name, first_release_date, rating, summary; limit #{count};"
     response_string = http.request(request).body
     response_array = JSON.parse(response_string)
+    # Parse data and create Game classes
     response_array.each do |game|
         name = game["name"]
-        first_release_date = game["first_release_date"]
+        first_release_date = DateTime.strptime(game["first_release_date"].to_s,"%s") if game["first_release_date"]
         rating = game["rating"]
         summary = game["summary"]
         Game.create(name: name, first_release_date: first_release_date, rating: rating, summary: summary)
     end
 end
-get_games(20)
+get_games(game_seed_count)
 
-# BROKEN BELOW HERE
 # GameConsole seeds
 console_game_seed_count.times do
     game = Game.all[rand(game_seed_count)]

@@ -3,6 +3,14 @@ class Game < ActiveRecord::Base
     has_many(:console_games)
     has_many(:consoles, through: :console_games)
 
+    # Additional CRUD Methods: Begin
+    
+    def all_name
+        Games.all.map{|game| game.name}
+    end
+
+    # Additional CRUD Methods: End
+
     def add_game(name)
         first_release_date = ""
         rating = ""
