@@ -17,32 +17,22 @@ user_seed_count.times do
     User.create(name: name, birthday: birthday)
 end
 
-# Console seeds via Faker gem, assign Consoles to random Users
-console_seed_count.times do
-    name = Faker::Games::Pokemon.name
+# Game seeds from IGDB API
+GamesApi.get_games(game_seed_count).each do |game|
+    name = game["name"]
+    first_release_date = game["first_release_date"]
+    rating = game["rating"]
+    summary = game["summary"]
+    Game.create(name: name, first_release_date: first_release_date, rating: rating, summary: summary)
+end
+
+# Add consoles to db and assign user id's
+GamesApi.get_consoles(console_seed_count).each do |console|
+    name = console["name"]
     user = User.all[rand(user_seed_count)]
     user.create_console(name)
 end
 
-# Game seeds from IGDB API
-def get_games(count)
-    http = Net::HTTP.new('api-v3.igdb.com',443)
-    http.use_ssl = true
-    request = Net::HTTP::Post.new(URI('https://api-v3.igdb.com/games'), {'user-key' => '604d3e58cf35c387d2cc94b3e51ecc35'})
-    request.body = "fields name, first_release_date, rating, summary; limit #{count};"
-    response_string = http.request(request).body
-    response_array = JSON.parse(response_string)
-    response_array.each do |game|
-        name = game["name"]
-        first_release_date = game["first_release_date"]
-        rating = game["rating"]
-        summary = game["summary"]
-        Game.create(name: name, first_release_date: first_release_date, rating: rating, summary: summary)
-    end
-end
-get_games(20)
-
-# BROKEN BELOW HERE
 # GameConsole seeds
 console_game_seed_count.times do
     game = Game.all[rand(game_seed_count)]
@@ -50,3 +40,5 @@ console_game_seed_count.times do
     user = console.user
     user.add_game_to_console(console, game)
 end
+
+
