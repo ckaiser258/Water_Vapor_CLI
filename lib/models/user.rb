@@ -64,6 +64,10 @@ class User < ActiveRecord::Base
         console_in_user_library?(console) ? console.remove_game_by_name(game_name) : "Unable to remove #{game.name} from console #{console.name} because this console does not belong to you."
     end
 
+    def remove_game_by_name_from_console_by_name(console_name, game_name)
+        Console.find_by_name(console_name).remove_game_by_name(game_name)
+    end
+
     # Additional CRUD Methods: End
     # Other Analytics Methods: Start
 
@@ -91,16 +95,32 @@ class User < ActiveRecord::Base
         end}
     end
 
-    def games_and_ratings(game_name)
-        self.games.map{|game|"#{game.name} - #{game.rating}"}
+    def games_and_ratings
+        self.games.map do |game|
+            if !game.rating
+                "#{game.name} - No Rating"
+            else
+            "#{game.name} - #{game.rating}"
+            end
+        end
     end
 
     def game_count
         self.games.count
     end
 
-    def self.top_ten
-        self.games.order(rating: :desc).limit(10).map{|game| "#{game.name} (Rating: #{game.rating})"}
+    def top_ten
+        # Sort useres games by rating, reverse that since the default is ascending order. Then just take the top 10
+        # Ternary is used to check for nil in the array
+        user_sorted_games = self.games.sort_by{|game| game.rating ? game.rating : 0}.reverse[0,9]
+        # Map to a user friendly readable string
+        user_sorted_games.map do |game|
+             if game.rating
+                "#{game.name} - (Rating: #{game.rating})"
+             else
+                "#{game.name} - (Rating: N/A)"
+             end
+        end
     end
 
     # Returns a list of game names that self and another user have in commond
@@ -111,6 +131,10 @@ class User < ActiveRecord::Base
     # All user stats
     def self.stats
         self.all.map{|user| "Name: #{user.name}, Consoles: #{user.console_count}, Games: #{user.game_count}"}
+    end
+
+    def self.names
+        self.all.map{|user| user.name}
     end
 
     # Other Analytics Methods: End

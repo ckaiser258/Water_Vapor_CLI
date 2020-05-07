@@ -75,8 +75,8 @@ class CommandLineInterface
             consoles = gets.chomp
             puts user.console_names if consoles == "My Consoles"
             console = gets.chomp
-            user.remove_game_by_name_from_console(new_game, console)
-            puts "#{game} has been successfully removed from your #{console}"
+            user.remove_game_by_name_from_console_by_name(console, game)
+            puts "#{game} has been successfully removed from your #{console}."
         else
             puts "Thank you."
         end
@@ -87,9 +87,13 @@ class CommandLineInterface
         puts "Yes or no:"
         response = gets.chomp
         if response == "Yes"
+            puts "Would you like to see a list of your consoles?"
+            yes_or_no = gets.chomp
+            puts user.console_names if yes_or_no == "Yes"
             puts "Which console would you like to remove?"
             console = gets.chomp
-            user.remove_console(console)
+            user.remove_console_by_name(console)
+            puts "#{console} has been successfully removed from your library."
         else
             puts "Thank you."
         end
@@ -113,11 +117,12 @@ class CommandLineInterface
         if yes_or_no == "Yes"
             puts "What is the other user's full name?"
             other_user = gets.chomp
-            while !User.all.name.include? other_user
+            while !User.names.include?(other_user)
                 puts "We could not find that user. Please re-enter."
                 other_user = gets.chomp
             end
-            puts user.common_games(other_user)
+            puts user.common_games(User.find_by_name(other_user))
+            puts "You and #{other_user} don't have any games in common." if user.common_games(User.find_by_name(other_user)) == []
         else
             puts "Thank you."
         end
@@ -145,6 +150,9 @@ class CommandLineInterface
         puts "Yes or No:"
         yes_or_no = gets.chomp
         if yes_or_no == "Yes"
+            puts "Would you like to view a list of your games?"
+            input = gets.chomp
+            puts user.game_names if input == "Yes"
             puts "Which game would you like to know the user rating of?"
             response = gets.chomp
             while !Game.all_name.include? response
@@ -169,45 +177,60 @@ class CommandLineInterface
     end
 
     def top_ten_games(user)
-        puts "Your top 10 rated games are:"
-        puts "#{user.top_ten}"
+        puts "Would you like to view your top 10 rated games?"
+        puts "Yes or No:"
+        response = gets.chomp
+        if response == "Yes"
+            puts "Your top 10 rated games are:"
+            puts "#{user.top_ten}"
+        else
+            puts "Thank you."
+        end
     end
 
-    def get_release_date
+    def get_release_date(user)
         puts "Would you like to view the release date of a game?"
         puts "Yes or No:"
         yes_or_no = gets.chomp
         if yes_or_no == "Yes"
+            puts "Would you like to view a list of your games?"
+            input = gets.chomp
+            puts user.game_names if input == "Yes"
             puts "Which game would you like to know the release date of?"
             game_name = gets.chomp
-            while !Game.all_name.include? response
-                puts "We could not find that game. Please re-enter"
+            while !user.game_names.include?(game_name)
+                puts "We could not find that game. Please re-enter."
                 game_name = gets.chomp
             end
-            Game.all.name.map{|game|
-            if game_name == game.name
-            puts "The release date of #{game_name} was #{game.first_release_date}."
+            game = Game.find_by_name(game_name)
+            if !game.first_release_date 
+                puts "We don't have a release date on record for #{game_name}."
             else
-            puts "We could not find that game, please re-enter."
-            game_name = gets.chomp
-            end}
+                puts "The release date of #{game_name} was #{game.first_release_date.strftime('%Y-%m-%d')}."
+            end
         else
             puts "Thank you."
         end
     end
 
-    def get_release_dates
+    def get_release_dates(user)
         puts "Would you like to view the release dates of your games?"
         puts "Yes or No:"
         yes_or_no = gets.chomp
         if yes_or_no == "Yes"
-            puts Game.all.name.map{|game| "#{game.name} - #{game.first_release_date}"}
+            user.games.map do |game| 
+                if !game.first_release_date 
+                    puts "No release date on record for #{game.name}"
+                else
+                    puts "#{game.name} - #{game.first_release_date.strftime('%Y-%m-%d')}"
+            end
+        end
         else
             puts "Thank you."
         end
     end
 
-    def how_many_games
+    def how_many_games(user)
         puts "You have #{user.game_count} games in your library."
     end
 
@@ -269,22 +292,22 @@ class CommandLineInterface
             response = gets.chomp
         elsif
             response == 'View Rating'
-            get_rating
+            get_rating(user)
             puts "What would you like to do next?"
             response = gets.chomp
         elsif
             response == "View Ratings"
-            get_ratings
+            get_ratings(user)
             puts "What would you like to do next?"
             response = gets.chomp
         elsif
             response == 'View Release Date'
-            get_release_date
+            get_release_date(user)
             puts "What would you like to do next?"
             response = gets.chomp
         elsif
             response == 'View Release Dates'
-            get_release_dates
+            get_release_dates(user)
             puts "What would you like to do next?"
             response = gets.chomp
         elsif
@@ -294,7 +317,7 @@ class CommandLineInterface
             response = gets.chomp
         elsif
             response == "Total Games"
-            how_many_games
+            how_many_games(user)
             puts "What would you like to do next?"
             response = gets.chomp
         elsif
