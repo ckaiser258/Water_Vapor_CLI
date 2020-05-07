@@ -25,13 +25,13 @@ class CommandLineInterface
         yes_or_no = gets.chomp
         if yes_or_no == "Yes"
             puts "Would you like to see which games are available?"
-            puts "Yes or no:"
+            puts "Yes or No:"
             response = gets.chomp
             puts Game.all_name if response == "Yes"
             puts "Which game would you like to add?"
             new_game = gets.chomp
             puts "Would you like to see which consoles are available?"
-            puts "Yes or no:"
+            puts "Yes or No:"
             response2 = gets.chomp
             puts user.console_names if response2 == "Yes"
             puts "What console is your game on?"
@@ -49,7 +49,7 @@ class CommandLineInterface
         response = gets.chomp
         if response == "Yes"
             puts "Would you like to see which consoles are available?"
-            puts "Yes or no:"
+            puts "Yes or No:"
             response2 = gets.chomp
             puts (Console.console_all_names - user.console_names) if response2 == "Yes"
             puts "Which console would you like to add?"
@@ -84,7 +84,7 @@ class CommandLineInterface
 
     def remove_console(user)
         puts "Would you like to remove a console from your library?"
-        puts "Yes or no:"
+        puts "Yes or No:"
         response = gets.chomp
         if response == "Yes"
             puts "Would you like to see a list of your consoles?"
@@ -112,7 +112,7 @@ class CommandLineInterface
 
     def view_common_games(user)
         puts "Would you like to view common games between you and another user?"
-        puts "Yes or no:"
+        puts "Yes or No:"
         yes_or_no = gets.chomp
         if yes_or_no == "Yes"
             puts "What is the other user's full name?"
