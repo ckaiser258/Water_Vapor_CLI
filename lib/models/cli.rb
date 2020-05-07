@@ -1,21 +1,19 @@
 class CommandLineInterface
     def login 
         puts "\nWelcome to Water Vapor, please login by typing your name:"
-        puts "If you'd like to see a list of user names, type 'Users'\n"
+        puts "(If you'd like to see a list of user names, type 'Users')\n"
         input = gets.chomp
-        if input == "Users"
-            puts "\nAvalible Users: \n-------------------------------------------------- \n"
-            puts User.stats
-            input = gets.chomp
-        else
-            user = nil
-            while !user
-                if User.find_by_name(input) != nil
-                    user = User.find_by_name(input)
-                else
-                    puts "We cannot find that account, please re-enter name."
-                    input = gets.chomp
-                end
+        user = nil
+        while !user
+            if input == "Users"
+                puts "\nAvalible Users: \n-------------------------------------------------- \n"
+                puts User.stats
+                input = gets.chomp
+            elsif User.find_by_name(input)
+                user = User.find_by_name(input)
+            else
+                puts "We cannot find that account, please re-enter name.\n"
+                input = gets.chomp
             end
         end
         user
@@ -214,27 +212,27 @@ class CommandLineInterface
     end
 
     def help_menu
-        puts "If you want to view your library of games, type 'View Games'\n
-            To add a game to your library, type 'Add Game'\n
-            To add a console to your library, type 'Add Console' \n
-            To remove a game from your library, type 'Remove Game'\n
-            To remove a console from your library, type 'Remove Console'\n
-            To get a summary of a game, type 'Get Summary'\n
-            To view the average user rating of a game, type 'View Rating'\n
-            To view the average user rating of all your games as a list, type 'View Ratings'\n
-            To view the release date of a game, type 'View Release Date'\n
-            To view the release dates of all your games, type 'View Release Dates'\n
-            To view common games between another user and yourself, type 'Common Games'\n
-            To see the total number of games you have in your library, type 'Total Games'\n
-            To view the top 10 games in your library ordered by average user rating, type 'Top 10'\n
-            To quit this application, type 'Quit'"
+        puts "\nIf you want to view your library of games, type 'View Games'\n"\
+            "To add a game to your library, type 'Add Game'\n"\
+            "To add a console to your library, type 'Add Console' \n"\
+            "To remove a game from your library, type 'Remove Game'\n"\
+            "To remove a console from your library, type 'Remove Console'\n"\
+            "To get a summary of a game, type 'Get Summary'\n"\
+            "To view the average user rating of a game, type 'View Rating'\n"\
+            "To view the average user rating of all your games as a list, type 'View Ratings'\n"\
+            "To view the release date of a game, type 'View Release Date'\n"\
+            "To view the release dates of all your games, type 'View Release Dates'\n"\
+            "To view common games between another user and yourself, type 'Common Games'\n"\
+            "To see the total number of games you have in your library, type 'Total Games'\n"\
+            "To view the top 10 games in your library ordered by average user rating, type 'Top 10'\n"\
+            "To quit this application, type 'Quit'"
     end
 
 #Master method
     def what_would_you_like_to_do?(user)
         #add puts here to return "Happy Birthday #{user}!" if it's their birthday
-        puts "Hello, #{user.name}, what would you like to do?\n
-        For a list of things you can ask me to do for you, type 'Help'"
+        puts "\nHello, #{user.name}, what would you like to do?\n"\
+        "(For a list of things you can ask me to do for you, type 'Help')"
         response = gets.chomp
         while response != "Quit"
         if response == "Help"
