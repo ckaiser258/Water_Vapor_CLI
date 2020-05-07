@@ -258,74 +258,77 @@ class CommandLineInterface
         "(For a list of things you can ask me to do for you, type 'Help')"
         response = gets.chomp
         while response != "Quit"
-        if response == "Help"
-            help_menu
-            response = gets.chomp
-        elsif response == "View Games"
-            view_games(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == "Add Game"
-            add_game(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == 'Add Console'
-            add_console(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == "Remove Game"
-            remove_game(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == 'Remove Console'
-            remove_console(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == "Get Summary"
-            get_summary
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == 'View Rating'
-            get_rating(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == "View Ratings"
-            get_ratings(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == 'View Release Date'
-            get_release_date(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == 'View Release Dates'
-            get_release_dates(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == "Common Games"
-            view_common_games(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == "Total Games"
-            how_many_games(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        elsif
-            response == 'Top 10'
-            top_ten_games(user)
-            puts "What would you like to do next?"
-            response = gets.chomp
-        end
+            if response == "Help"
+                help_menu
+                response = gets.chomp
+            elsif response == "View Games"
+                view_games(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == "Add Game"
+                add_game(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == 'Add Console'
+                add_console(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == "Remove Game"
+                remove_game(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == 'Remove Console'
+                remove_console(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == "Get Summary"
+                get_summary
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == 'View Rating'
+                get_rating(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == "View Ratings"
+                get_ratings(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == 'View Release Date'
+                get_release_date(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == 'View Release Dates'
+                get_release_dates(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == "Common Games"
+                view_common_games(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == "Total Games"
+                how_many_games(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            elsif
+                response == 'Top 10'
+                top_ten_games(user)
+                puts "What would you like to do next?"
+                response = gets.chomp
+            else
+                puts "Command not found, please try again."
+                response = gets.chomp
+            end
         end
     end
 end
