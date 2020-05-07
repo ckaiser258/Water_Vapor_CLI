@@ -14,5 +14,5 @@ class Game < ActiveRecord::Base
     end
 
     # Additional CRUD Methods: End
-
+    
 end

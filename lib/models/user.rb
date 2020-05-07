@@ -50,14 +50,18 @@ class User < ActiveRecord::Base
         console_in_user_library?(console) ? console.add_game_by_name(game_name) : "Unable to add #{game.name} to console #{console.name} because this console does not belong to you."
     end
 
+    def add_game_by_name_to_console_by_name(console_name, game_name)
+        Console.find_by_name(console_name).add_game_by_name(game_name)
+    end
+
     def remove_game_from_console(console, game)
         # Remove game only if Console belongs to User
-        console_in_user_library?(console) ? console.remove_game(game) : "Unable to add #{game.name} to console #{console.name} because this console does not belong to you."
+        console_in_user_library?(console) ? console.remove_game(game) : "Unable to remove #{game.name} from console #{console.name} because this console does not belong to you."
     end
 
     def remove_game_by_name_from_console(console, game_name)
         # Remove game only if Console belongs to User
-        console_in_user_library?(console) ? console.remove_game_by_name(game_name) : "Unable to add #{game.name} to console #{console.name} because this console does not belong to you."
+        console_in_user_library?(console) ? console.remove_game_by_name(game_name) : "Unable to remove #{game.name} from console #{console.name} because this console does not belong to you."
     end
 
     # Additional CRUD Methods: End
@@ -67,13 +71,36 @@ class User < ActiveRecord::Base
         self.consoles.count
     end
 
+    def console_names
+        self.consoles.map {|console| console.name}
+    end
+
     # List all games in users library
     def games
         self.consoles.map{|console| console.games}.flatten
     end
 
+    def game_names
+        self.games.map{|game| game.name}
+    end
+
+    def game_and_rating(game_name)
+        self.games.map{|game|
+        if game_name == game.name
+        return "#{game.name} - #{game.rating}"
+        end}
+    end
+
+    def games_and_ratings(game_name)
+        self.games.map{|game|"#{game.name} - #{game.rating}"}
+    end
+
     def game_count
         self.games.count
+    end
+
+    def self.top_ten
+        self.games.order(rating: :desc).limit(10).map{|game| "#{game.name} (Rating: #{game.rating})"}
     end
 
     # Returns a list of game names that self and another user have in commond
