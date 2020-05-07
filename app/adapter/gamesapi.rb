@@ -1,6 +1,5 @@
 class GamesApi
-    
-    @@user_key = "604d3e58cf35c387d2cc94b3e51ecc35"
+    @@user_key = '604d3e58cf35c387d2cc94b3e51ecc35'
 
     def self.get_games(count)
         http = Net::HTTP.new('api-v3.igdb.com',443)
