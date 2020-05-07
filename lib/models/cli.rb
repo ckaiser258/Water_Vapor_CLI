@@ -1,16 +1,21 @@
 class CommandLineInterface
     def login 
-        puts "\nAvalible Users: \n-------------------------------------------------- \n"
-        puts User.stats
-        puts "\nWelcome to Water Vapor, please login by typing your name:\n"
-        response = gets.chomp
-        user = nil
-        while !user
-            if User.find_by_name(response)
-                user = User.find_by_name(response)
-            else
-                puts "We cannot find that account, please re-enter name."
-                response = gets.chomp
+        puts "\nWelcome to Water Vapor, please login by typing your name:"
+        puts "If you'd like to see a list of user names, type 'Users'\n"
+        input = gets.chomp
+        if input == "Users"
+            puts "\nAvalible Users: \n-------------------------------------------------- \n"
+            puts User.stats
+            input = gets.chomp
+        else
+            user = nil
+            while !user
+                if User.find_by_name(input) != nil
+                    user = User.find_by_name(input)
+                else
+                    puts "We cannot find that account, please re-enter name."
+                    input = gets.chomp
+                end
             end
         end
         user
@@ -45,6 +50,10 @@ class CommandLineInterface
         puts "Yes or No:"
         response = gets.chomp
         if response == "Yes"
+            puts "Would you like to see which consoles are available?"
+            puts "Yes or no:"
+            response2 = gets.chomp
+            puts (Console.console_all_names - user.console_names) if response2 == "Yes"
             puts "Which console would you like to add?"
             new_console = gets.chomp
             user.add_console_by_name(new_console)
@@ -59,12 +68,17 @@ class CommandLineInterface
         puts "Yes or No:"
         response = gets.chomp
         if response == "Yes"
+            puts "Would you like to see a list of your games?"
+            yes_or_no = gets.chomp
+            puts user.game_names if yes_or_no == "Yes"
             puts "Which game would you like to remove?"
             game = gets.chomp
-            puts "What console is this on?"
+            puts "What console is this on? (If you'd like to view your consoles, type 'My Consoles'"
+            consoles = gets.chomp
+            puts user.console_names if consoles == "My Consoles"
             console = gets.chomp
             user.remove_game_by_name_from_console(new_game, console)
-            puts "#{new_game} has been successfully removed from your #{console}"
+            puts "#{game} has been successfully removed from your #{console}"
         else
             puts "Thank you."
         end
@@ -219,7 +233,7 @@ class CommandLineInterface
 #Master method
     def what_would_you_like_to_do?(user)
         #add puts here to return "Happy Birthday #{user}!" if it's their birthday
-        puts "\nHello, #{user.name}, what would you like to do?\n
+        puts "Hello, #{user.name}, what would you like to do?\n
         For a list of things you can ask me to do for you, type 'Help'"
         response = gets.chomp
         while response != "Quit"
