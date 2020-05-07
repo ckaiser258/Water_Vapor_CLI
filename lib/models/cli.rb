@@ -139,6 +139,7 @@ class CommandLineInterface
                 puts "We could not find that game. Please re-enter."
                 response = gets.chomp
             end
+            puts "Unfortunately, we don't have a summary for this game." if !Game.find_by_name(response).summary
             puts Game.find_by_name(response).summary
         else
             puts "Thank you."
