@@ -1,15 +1,15 @@
 class CommandLineInterface
     def login 
+        puts "\nAvalible Users: \n-------------------------------------------------- \n"
         puts User.stats
-        puts "\n"
-        puts "Welcome, what is your name?"
+        puts "\nWelcome to Water Vapor, please login by typing your name:\n"
         response = gets.chomp
         user = nil
         while !user
             if User.find_by_name(response)
                 user = User.find_by_name(response)
             else
-                puts "We cannot find that name, please re-enter."
+                puts "We cannot find that account, please re-enter name."
                 response = gets.chomp
             end
         end
@@ -219,7 +219,7 @@ class CommandLineInterface
 #Master method
     def what_would_you_like_to_do?(user)
         #add puts here to return "Happy Birthday #{user}!" if it's their birthday
-        puts "Hello, #{user}, what would you like to do?\n
+        puts "\nHello, #{user.name}, what would you like to do?\n
         For a list of things you can ask me to do for you, type 'Help'"
         response = gets.chomp
         while response != "Quit"
