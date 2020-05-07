@@ -1,6 +1,7 @@
 require_relative '../config/environment'
+a = Artii::Base.new :font => 'slant'
 
-artii 'Water Vapor' --font slant
+puts a.asciify('Water Vapor')
 
 cli = CommandLineInterface.new
 

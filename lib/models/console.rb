@@ -28,6 +28,10 @@ class Console < ActiveRecord::Base
         ConsoleGame.find_by(console_id: self.id, game_id: Game.find_by_name(game_name).id).destroy
     end
 
+    def self.console_all_names
+        self.all.map {|console| console.name}
+    end
+
     # Additional CRUD Methods: End
 
 end
