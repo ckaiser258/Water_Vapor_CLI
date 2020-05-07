@@ -1,4 +1,5 @@
 require 'bundler'
+require 'artii'
 require 'net/https'
 Bundler.require
 

@@ -1,5 +1,7 @@
 require_relative '../config/environment'
 
+artii 'Water Vapor' --font slant
+
 cli = CommandLineInterface.new
 
 user = cli.login
