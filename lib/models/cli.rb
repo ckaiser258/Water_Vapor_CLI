@@ -71,12 +71,10 @@ class CommandLineInterface
             puts user.game_names if yes_or_no == "Yes"
             puts "Which game would you like to remove?"
             game = gets.chomp
-            puts "What console is this on? (If you'd like to view your consoles, type 'My Consoles'"
-            consoles = gets.chomp
-            puts user.console_names if consoles == "My Consoles"
-            console = gets.chomp
-            user.remove_game_by_name_from_console_by_name(console, game)
-            puts "#{game} has been successfully removed from your #{console}."
+            console = user.game_name_belongs_to_which_console(game)
+            user.remove_game_by_name_from_console(console, game)
+            binding.pry
+            puts "#{game} has been successfully removed from your #{console.name}."
         else
             puts "Thank you."
         end
