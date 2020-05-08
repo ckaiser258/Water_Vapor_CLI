@@ -60,8 +60,7 @@ class User < ActiveRecord::Base
     end
 
     def remove_game_by_name_from_console(console, game_name)
-        # Remove game only if Console belongs to User
-        console_in_user_library?(console) ? console.remove_game_by_name(game_name) : "Unable to remove #{game.name} from console #{console.name} because this console does not belong to you."
+        console.remove_game_by_name(game_name)
     end
 
     def remove_game_by_name_from_console_by_name(console_name, game_name)
@@ -142,6 +141,10 @@ class User < ActiveRecord::Base
 
     def console_in_user_library?(console)
         self.consoles.include?(console)
+    end
+
+    def game_name_belongs_to_which_console(game_name)
+        self.consoles.filter{|console| console.games.map{|game| game.name}.include?(game_name)}.first
     end
 
     # Helper Methods: End

@@ -77,6 +77,10 @@ class CommandLineInterface
             console = gets.chomp
             user.remove_game_by_name_from_console_by_name(console, game)
             puts "#{game} has been successfully removed from your #{console}."
+            console = user.game_name_belongs_to_which_console(game)
+            user.remove_game_by_name_from_console(console, game)
+            binding.pry
+            puts "#{game} has been successfully removed from your #{console.name}."
         else
             puts "Thank you."
         end
