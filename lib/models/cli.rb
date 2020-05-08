@@ -71,7 +71,7 @@ class CommandLineInterface
             puts user.game_names if yes_or_no == "Yes"
             puts "Which game would you like to remove?"
             game = gets.chomp
-            puts "What console is this on? (If you'd like to view your consoles, type 'My Consoles'"
+            puts "What console is this on? (If you'd like to view your consoles, type 'My Consoles')"
             consoles = gets.chomp
             puts user.console_names if consoles == "My Consoles"
             console = gets.chomp
