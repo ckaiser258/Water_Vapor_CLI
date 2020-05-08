@@ -12,12 +12,18 @@ class Console < ActiveRecord::Base
     # Additional CRUD Methods: Start
 
     def add_game(game)
-        ConsoleGame.create(console_id: self.id, game_id: game.id)
+        x = ConsoleGame.create
+        x.game = game
+        x.console = self
+        x.save
+
     end
 
-    # not working right, cant see it in self.games after its added.
     def add_game_by_name(game_name)
-        ConsoleGame.create(console_id: self.id, game_id: Game.find_by_name(game_name).id)
+        x = ConsoleGame.create
+        x.game = Game.find_by_name(game_name)
+        x.console = self
+        x.save
     end
 
     def remove_game(game)
